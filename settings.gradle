@@ -1,0 +1,6 @@
+rootProject.name = 'mopl'
+
+include 'mopl-api'
+include 'mopl-batch'
+include 'mopl-persistence'
+include 'mopl-realtime'
