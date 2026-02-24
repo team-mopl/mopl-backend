@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
     id 'org.springframework.boot' version '3.5.11'
     id 'io.spring.dependency-management' version '1.1.7'
 }
@@ -7,6 +8,10 @@ plugins {
 group = 'team'
 version = '0.0.1-SNAPSHOT'
 description = 'mopl'
+
+repositories {
+    mavenCentral()
+}
 
 bootJar {
     enabled = false
@@ -87,18 +92,18 @@ subprojects {
 }
 
 tasks.register('jacocoRootReport', JacocoReport) {
-    dependsOn subprojects.test
+    dependsOn subprojects.collect { it.tasks.named('test') }
+    dependsOn subprojects.collect { it.tasks.named('jacocoTestReport') }
 
-    executionData fileTree(project.rootDir.absolutePath) {
-        include "**/build/jacoco/test.exec"
-    }
-
-    subprojects.each { subproject ->
-        sourceSets subproject.sourceSets.main
-    }
+    // Avoid broad rootDir scanning to satisfy Gradle 8 task validation.
+    executionData.from(subprojects.collect { it.layout.buildDirectory.file('jacoco/test.exec') })
+    sourceDirectories.from(subprojects.collect { it.sourceSets.main.allSource.srcDirs })
+    classDirectories.from(subprojects.collect { it.sourceSets.main.output })
 
     reports {
         html.required = true
         xml.required = true
+        html.outputLocation = layout.buildDirectory.dir('reports/jacoco/jacocoRootReport/html')
+        xml.outputLocation = layout.buildDirectory.file('reports/jacoco/jacocoRootReport/jacocoRootReport.xml')
     }
 }
