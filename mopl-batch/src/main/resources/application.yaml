@@ -5,8 +5,10 @@ spring:
   application:
     name: mopl-batch
   profiles:
-    include: persistence
+    include:
+      - common
+      - persistence
     active: ${SPRING_PROFILES_ACTIVE:dev}
     group:
-      dev: persistence-dev
-      prod: persistence-prod
+      dev: persistence-dev, common-dev
+      prod: persistence-prod, common-prod
