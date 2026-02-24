@@ -5,8 +5,8 @@ spring:
   application:
     name: mopl-realtime
   profiles:
-    include: persistence
+    include: common
     active: ${SPRING_PROFILES_ACTIVE:dev}
     group:
-      dev: persistence-dev
-      prod: persistence-prod
+      dev: common-dev
+      prod: common-prod
