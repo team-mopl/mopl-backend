@@ -2,6 +2,14 @@ plugins {
     id 'org.springframework.boot'
 }
 
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
 dependencies {
     // h2
     runtimeOnly 'com.h2database:h2'
