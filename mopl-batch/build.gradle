@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation project(':mopl-persistence')
+    implementation project(':mopl-common')
 
     // Batch
     implementation 'org.springframework.boot:spring-boot-starter-batch'
@@ -19,4 +20,3 @@ dependencies {
     // prometheus
     implementation 'io.micrometer:micrometer-registry-prometheus'
 }
-
