@@ -4,9 +4,11 @@ plugins {
 
 dependencies {
     implementation project(':mopl-persistence')
+    implementation project(':mopl-common')
+
 
     // web
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // WebSocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -24,7 +26,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     // Kafka
-    implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    implementation 'org.springframework.kafka:spring-kafka'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
 
     // actuator

@@ -1,3 +1,9 @@
 spring:
   application:
     name: mopl-batch
+  profiles:
+    include: persistence
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+    group:
+      dev: persistence-dev
+      prod: persistence-prod
