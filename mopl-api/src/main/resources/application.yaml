@@ -4,11 +4,14 @@ server:
 spring:
   application:
     name: mopl-api
+  config:
+    import: optional:file:.env[.properties], optional:file:../.env[.properties]
   profiles:
     include: persistence
     active: ${SPRING_PROFILES_ACTIVE:dev}
     group:
       dev: persistence-dev
+      local: persistence-local
       prod: persistence-prod
   servlet:
     multipart:

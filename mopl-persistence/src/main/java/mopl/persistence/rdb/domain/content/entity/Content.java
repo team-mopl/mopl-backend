@@ -1,0 +1,83 @@
+package mopl.persistence.rdb.domain.content.entity;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import mopl.persistence.rdb.domain.content.enums.ContentType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(
+    name = "contents",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uq_content_origin", columnNames = {"content_type", "origin_id"})
+    }
+)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Content {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private ContentType contentType;
+
+    @Column(nullable = false, unique = true)
+    private Long originId;
+
+    private String title;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    private String thumbnailUrl;
+
+    private double averageRating;
+
+    private int reviewCount;
+
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContentTag> contentTags = new ArrayList<>();
+
+    /** 관리자가 수동 추가 (originId 없음) */
+    public Content(ContentType contentType, String title, String description, String thumbnailUrl) {
+        this.contentType = contentType;
+        this.title = title;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+        this.averageRating = 0.0;
+        this.reviewCount = 0;
+    }
+
+    /** 배치용 생성자 originId 필수 */
+    public Content(ContentType contentType, Long originId, String title, String description, String thumbnailUrl) {
+        this.contentType = contentType;
+        this.originId = originId;
+        this.title = title;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+        this.averageRating = 0.0;
+        this.reviewCount = 0;
+    }
+
+    public void addTag(Tag tag) {
+        boolean isDuplicate = this.contentTags.stream()
+                .anyMatch(ct -> ct.getTag().getId() != null &&
+                        ct.getTag().getId().equals(tag.getId()));
+
+        if (!isDuplicate) {
+            ContentTag contentTag = new ContentTag(this, tag);
+            this.contentTags.add(contentTag);
+        }
+    }
+
+    public void update(String title, String description, String thumbnailUrl) {
+        this.title = title;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+    }
+}
