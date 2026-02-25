@@ -1,4 +1,4 @@
-package mopl.persistence.rdb.content.enums;
+package mopl.persistence.rdb.domain.content.enums;
 
 public enum ContentType {
     movie,

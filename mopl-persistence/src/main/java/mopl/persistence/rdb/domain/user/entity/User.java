@@ -1,10 +1,10 @@
-package mopl.persistence.rdb.user.entity;
+package mopl.persistence.rdb.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import mopl.persistence.rdb.user.enums.Role;
+import mopl.persistence.rdb.domain.user.enums.Role;
 
 @Entity
 @Table(name = "users")
