@@ -52,6 +52,14 @@ jobs:
             **/build/reports/jacoco/test/jacocoTestReport.xml
             build/reports/jacoco/jacocoRootReport/**
 
+      # 루트 JaCoCo XML 리포트를 Codecov에 업로드해 README 배지에 반영
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
+          fail_ci_if_error: false
+
   build:
     runs-on: ubuntu-latest
     # test 잡이 성공해야 build 실행
