@@ -1,7 +1,7 @@
 package mopl.persistence.rdb.global.dto;
 
-import com.mopl.global.enums.SortDirection;
 import lombok.Builder;
+import mopl.persistence.rdb.global.enums.SortDirection;
 
 import java.util.List;
 
