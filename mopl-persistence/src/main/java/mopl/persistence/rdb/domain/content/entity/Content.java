@@ -42,4 +42,42 @@ public class Content {
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContentTag> contentTags = new ArrayList<>();
+
+    /** 관리자가 수동 추가 (originId 없음) */
+    public Content(ContentType contentType, String title, String description, String thumbnailUrl) {
+        this.contentType = contentType;
+        this.title = title;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+        this.averageRating = 0.0;
+        this.reviewCount = 0;
+    }
+
+    /** 배치용 생성자 originId 필수 */
+    public Content(ContentType contentType, Long originId, String title, String description, String thumbnailUrl) {
+        this.contentType = contentType;
+        this.originId = originId;
+        this.title = title;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+        this.averageRating = 0.0;
+        this.reviewCount = 0;
+    }
+
+    public void addTag(Tag tag) {
+        boolean isDuplicate = this.contentTags.stream()
+                .anyMatch(ct -> ct.getTag().getId() != null &&
+                        ct.getTag().getId().equals(tag.getId()));
+
+        if (!isDuplicate) {
+            ContentTag contentTag = new ContentTag(this, tag);
+            this.contentTags.add(contentTag);
+        }
+    }
+
+    public void update(String title, String description, String thumbnailUrl) {
+        this.title = title;
+        this.description = description;
+        this.thumbnailUrl = thumbnailUrl;
+    }
 }
