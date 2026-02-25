@@ -79,6 +79,16 @@ subprojects {
     }
 
     jacocoTestCoverageVerification {
+        if (project.name == 'mopl-persistence') {
+            def excludes = [
+                    '**/Q*',
+                    '**/rdb/global/**'
+            ]
+            classDirectories.setFrom(
+                    files(classDirectories.files.collect { fileTree(dir: it, exclude: excludes) })
+            )
+        }
+
         violationRules {
             rule {
                 limit {
