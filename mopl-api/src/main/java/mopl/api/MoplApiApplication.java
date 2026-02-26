@@ -3,7 +3,7 @@ package mopl.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "mopl")
 public class MoplApiApplication {
 
     public static void main(String[] args) {
