@@ -10,7 +10,6 @@ import mopl.api.domain.content.exception.ContentException;
 import mopl.api.domain.content.service.ContentService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -24,13 +23,14 @@ public class ContentController {
 
     private final ContentService contentService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "콘텐츠 생성")
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ContentDto> create(
             @RequestPart("request") @Valid CreateContentDto request,
             @RequestPart(value = "thumbnail") MultipartFile thumbnail
     ) {
+        // 썸네일 필수
         if (thumbnail == null || thumbnail.isEmpty()) {
             throw new ContentException(ContentErrorCode.INVALID_THUMBNAIL);
         }

@@ -26,7 +26,7 @@ public class ContentService {
 
         String thumbnailUrl = "https://example.com/thumbnail.png"; // TODO: S3에 썸네일 업로드
         Content content = new Content(req.type(), req.title(), req.description(), thumbnailUrl);    // 콘텐츠 생성
-        addTagsToContent(req.tags(), content);                                                      // 태그 추가 및 저장
+        addTags(req.tags(), content);                                                      // 태그 추가 및 저장
 
         Content newContent = contentRepository.save(content);
         List<String> tagNames = getTagNames(newContent);
@@ -35,8 +35,8 @@ public class ContentService {
         return toDto(newContent, presignedUrl, tagNames, 0);
     }
 
-    /** 콘텐츠 태그 매핑 및 저장 */
-    private void addTagsToContent(List<String> tagNames, Content content) {
+    /** 태그 매핑 및 저장 */
+    private void addTags(List<String> tagNames, Content content) {
         if (tagNames == null || tagNames.isEmpty()) return;
 
         tagNames.stream()
@@ -57,13 +57,13 @@ public class ContentService {
     }
 
     /** Dto 변환 */
-    private ContentDto toDto(Content content, String thumbnailUrl, List<String> tagNames, int watchCount) {
+    private ContentDto toDto(Content content, String presignedUrl, List<String> tagNames, int watchCount) {
         return new ContentDto(
                 content.getId().toString(),
                 content.getContentType(),
                 content.getTitle(),
                 content.getDescription(),
-                thumbnailUrl,
+                presignedUrl,
                 tagNames,
                 content.getAverageRating(),
                 content.getReviewCount(),
